@@ -52,7 +52,7 @@ print(f"Target names: {target_names}")
 
 # Explore the number of necessary PCA:
 pca_explore = PCA(n_components=13)
-pcas_explore = pca_explore.fit_transform(X_Factor)
+pca_fit_explore = pca_explore.fit_transform(X_Factor)
 ev = pca_explore.singular_values_
 
 # Scree plot for validating the number of factors:
@@ -101,16 +101,16 @@ print(f"Cumulative explained variance for the first 3 PCs: {np.sum(pca_explore.e
 # %% PERFORM PCA AND VISUALIZE THE RESULTS
 # perform PCA with 3 components:
 pca = PCA(n_components=3)
-pcas = pca.fit_transform(X_Factor)
+pca_fit = pca.fit_transform(X_Factor)
 
 # create a dataframe with the 3 components and the target variable:
-principal_df = pd.DataFrame(data=pcas, columns=['PC1', 'PC2', 'PC3'])
+principal_df = pd.DataFrame(data=pca_fit, columns=['PC1', 'PC2', 'PC3'])
 final_df = pd.concat([principal_df, pd.DataFrame(data=input_data.target, columns=['target'])], axis=1)
 
 # visualize the 3 components:
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-ax.scatter(pcas[:, 0], pcas[:, 1], pcas[:, 2], c='k',  alpha=0.6)
+ax.scatter(pca_fit[:, 0], pca_fit[:, 1], pca_fit[:, 2], c='k',  alpha=0.6)
 ax.view_init(elev=35, azim=45)
 ax.set_xlabel('PC1')
 ax.set_ylabel('PC2')
@@ -122,13 +122,13 @@ plt.savefig(RESULTSPATH + f'pca_wine_dataset.png', dpi=300)
 plt.show()
 
 
-# visualize the 3 components with their groundtruth labels:
+# visualize the 3 components with their ground truth labels:
 colors = ['r', 'g', 'b']
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 for target, color in zip(target_names, colors):
     indices = input_data.target == input_data.target_names.tolist().index(target)
-    ax.scatter(pcas[indices, 0], pcas[indices, 1], pcas[indices, 2], c=color, label=target)
+    ax.scatter(pca_fit[indices, 0], pca_fit[indices, 1], pca_fit[indices, 2], c=color, label=target)
 ax.view_init(elev=35, azim=45)
 ax.set_xlabel('PC1')
 ax.set_ylabel('PC2')
@@ -145,7 +145,7 @@ fig, axs = plt.subplots(1, 3, figsize=(12, 4))
 # XY projection: 
 for target, color in zip(target_names, colors):
     indices = input_data.target == input_data.target_names.tolist().index(target)
-    axs[0].scatter(pcas[indices, 0], pcas[indices, 1], c=color, label=target)
+    axs[0].scatter(pca_fit[indices, 0], pca_fit[indices, 1], c=color, label=target)
 axs[0].set_xlabel('PCA 1')
 axs[0].set_ylabel('PCA 2')
 axs[0].set_title('PC1 vs PC2')
@@ -153,7 +153,7 @@ axs[0].set_title('PC1 vs PC2')
 # XZ projection:
 for target, color in zip(target_names, colors):
     indices = input_data.target == input_data.target_names.tolist().index(target)
-    axs[1].scatter(pcas[indices, 0], pcas[indices, 2], c=color, label=target)
+    axs[1].scatter(pca_fit[indices, 0], pca_fit[indices, 2], c=color, label=target)
 axs[1].set_xlabel('PCA 1')
 axs[1].set_ylabel('PCA 3')
 axs[1].set_title('PC1 vs PC3')
@@ -161,7 +161,7 @@ axs[1].set_title('PC1 vs PC3')
 # YZ projection:
 for target, color in zip(target_names, colors):
     indices = input_data.target == input_data.target_names.tolist().index(target)
-    axs[2].scatter(pcas[indices, 1], pcas[indices, 2], c=color, label=target)
+    axs[2].scatter(pca_fit[indices, 1], pca_fit[indices, 2], c=color, label=target)
 axs[2].set_xlabel('PCA 2')
 axs[2].set_ylabel('PCA 3')
 axs[2].set_title('PC2 vs PC3')
