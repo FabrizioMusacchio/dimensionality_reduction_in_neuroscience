@@ -74,7 +74,7 @@ def plot_silhouette_score(fitted_model, PCA_model_S3_fit, method='kmeans', n_clu
 
     # Create a silhouette plot
     fig, ax1 = plt.subplots(1, 1)
-    fig.set_size_inches(7, 6)
+    fig.set_size_inches(5, 6)
 
     ax1.set_xlim([-0.1, 1]) # the silhouette coefficient can range from -1, 1
     ax1.set_ylim([0, len(PCA_model_S3_fit) + (n_clusters + 1) * 10])
@@ -100,7 +100,7 @@ def plot_silhouette_score(fitted_model, PCA_model_S3_fit, method='kmeans', n_clu
         # compute the new y_lower for next plot:
         y_lower = y_upper + 10  # 10 for the 0 samples
 
-    ax1.set_title("The silhouette plot for the various clusters.")
+    ax1.set_title(f"Silhouette plot for\n{method}")
     ax1.set_xlabel("The silhouette coefficient values")
     ax1.set_ylabel("Cluster label")
 
@@ -155,7 +155,38 @@ plt.tight_layout()
 plt.savefig(RESULTSPATH + 'clustering_datasets.png', dpi=300)
 plt.show()
 
-# %% KMEANS CLUSTERING
+# %% KMEANS CLUSTERING (BASIC)
+# in its simplest form, KMeans clustering can be performed as follows:
+blobs_data = datasets_all[4]
+
+# define the number of clusters:
+n_clusters = 3
+# create the KMeans object:
+kmeans = cluster.KMeans(n_clusters=n_clusters, random_state=0)
+# fit the data:
+kmeans_fit = kmeans.fit(blobs_data[0])
+
+# investigate the results:
+print(f"shape of the data: {blobs_data[0].shape}")
+print(f"shape of the labels: {kmeans_fit.labels_.shape}")
+
+print(f"KMeans labels: {kmeans_fit.labels_}")
+
+print(f"KMeans cluster centers: {kmeans_fit.cluster_centers_}")
+
+
+
+# plot the clustering results:
+fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+ax.scatter(blobs_data[0][:, 0], blobs_data[0][:, 1], c=kmeans_fit.labels_, s=10)
+# indicate the cluster centers:
+ax.scatter(kmeans_fit.cluster_centers_[:, 0], kmeans_fit.cluster_centers_[:, 1], c='r', s=100, marker='x')
+ax.set_title(f'KMeans clustering ({n_clusters} clusters)')
+plt.tight_layout()
+plt.savefig(RESULTSPATH + f'clustering_kmeans_({n_clusters} clusters, blobs).png', dpi=300)
+plt.show()
+
+# %% KMEANS CLUSTERING OVER ALL DATASETS
 # set the number of clusters:
 n_clusters = 2
 
@@ -167,8 +198,9 @@ for idx, dataset in enumerate(datasets_all):
     X = StandardScaler().fit_transform(X)
     # create the KMeans object:
     kmeans = cluster.KMeans(n_clusters=n_clusters, random_state=seed)
-    y_pred = kmeans.fit_predict(X)
-    kmeans_labels.append(y_pred)
+    kmeans_fit = kmeans.fit(X)
+    #y_labels = kmeans_fit.labels_
+    kmeans_labels.append(kmeans_fit.labels_)
 
 # plot the kmeans clustering results:
 fig, ax = plt.subplots(1, 6, figsize=(20, 4))
@@ -205,9 +237,33 @@ X = StandardScaler().fit_transform(X)
 kmeans = cluster.KMeans(n_clusters=n_clusters, random_state=seed)
 kmeans.fit(X)
 plot_silhouette_score(kmeans, X, method='clustering_kmeans_anisotropic', n_clusters=n_clusters)
-# %% AGGLOMERATIVE CLUSTERING
+# %% AGGLOMERATIVE CLUSTERING (BASIC)
+# in its simplest form, Agglomerative clustering can be performed as follows:
+blobs_data = datasets_all[4] # select the blobs dataset
+
+# define the number of clusters:
+n_clusters = 3
+# create the Agglomerative object:
+agg = cluster.AgglomerativeClustering(n_clusters=n_clusters)
+# fit the data:
+agg_fit = agg.fit(blobs_data[0])
+
+# investigate the results:
+print(f"shape of the data: {blobs_data[0].shape}")
+print(f"shape of the labels: {agg_fit.labels_.shape}")
+
+print(f"Agglomerative labels: {agg_fit.labels_}")
+
+# plot the clustering results:
+fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+ax.scatter(blobs_data[0][:, 0], blobs_data[0][:, 1], c=agg_fit.labels_, s=10)
+ax.set_title(f'Agglomerative clustering ({n_clusters} clusters)')
+plt.tight_layout()
+plt.savefig(RESULTSPATH + f'clustering_agg_({n_clusters} clusters, blobs).png', dpi=300)
+plt.show()
+# %% AGGLOMERATIVE CLUSTERING OVER ALL DATASETS
 # set Agglomerative clustering parameters:
-n_clusters = 2
+n_clusters = 3
 
 # iterate over datasets and collect Agglomerative labels for each dataset:
 agg_labels = []
@@ -273,7 +329,35 @@ plot_silhouette_score(agg, X, method='clustering_agg_anisotropic', n_clusters=n_
 
 
 
-# %% DBSCAN CLUSTERING
+# %% DBSCAN CLUSTERING (BASIC)
+# in its simplest form, DBSCAN clustering can be performed as follows:
+circles_data = datasets_all[0] # select the circles dataset
+
+# set DBSCAN parameters:
+eps = 0.2
+min_samples = 10
+
+# create the DBSCAN object:
+dbscan = cluster.DBSCAN(eps=eps, min_samples=min_samples)
+# fit the data:
+dbscan_fit = dbscan.fit(circles_data[0])
+
+# investigate the results:
+print(f"shape of the data: {circles_data[0].shape}")
+print(f"shape of the labels: {dbscan_fit.labels_.shape}")
+
+print(f"DBSCAN labels: {dbscan_fit.labels_}")
+
+# plot the clustering results:
+fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+ax.scatter(circles_data[0][:, 0], circles_data[0][:, 1], c=dbscan_fit.labels_, s=10)
+ax.set_title(f'DBSCAN clustering (eps={eps},\nmin_samples={min_samples})')
+plt.tight_layout()
+plt.savefig(RESULTSPATH + f'clustering_dbscan_(eps={eps}, min_samples={min_samples}, circles).png', dpi=300)
+plt.show()
+
+
+# %% DBSCAN CLUSTERING OVER ALL DATASETS
 # set DBSCAN parameters:
 eps = 0.3
 min_samples = 10
