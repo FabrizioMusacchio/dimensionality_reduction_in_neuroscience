@@ -186,6 +186,14 @@ plt.tight_layout()
 plt.savefig(RESULTSPATH + f'clustering_kmeans_({n_clusters} clusters, blobs).png', dpi=300)
 plt.show()
 
+# plot the data points w/o cluster.
+fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+ax.scatter(blobs_data[0][:, 0], blobs_data[0][:, 1], c='k', s=10, alpha=0.5)
+ax.set_title(f'Blobs dataset')
+plt.tight_layout()
+plt.savefig(RESULTSPATH + f'clustering_kmeans_({n_clusters}, blobs).png', dpi=300)
+plt.show()
+
 # %% KMEANS CLUSTERING OVER ALL DATASETS
 # set the number of clusters:
 n_clusters = 2
@@ -356,7 +364,13 @@ plt.tight_layout()
 plt.savefig(RESULTSPATH + f'clustering_dbscan_(eps={eps}, min_samples={min_samples}, circles).png', dpi=300)
 plt.show()
 
-
+# plot the data points w/o cluster.
+fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+ax.scatter(circles_data[0][:, 0], circles_data[0][:, 1], c='k', s=10, alpha=0.5)
+ax.set_title(f'Circles dataset')
+plt.tight_layout()
+plt.savefig(RESULTSPATH + f'clustering_dbscan_({n_clusters}, circls).png', dpi=300)
+plt.show()
 # %% DBSCAN CLUSTERING OVER ALL DATASETS
 # set DBSCAN parameters:
 eps = 0.3
