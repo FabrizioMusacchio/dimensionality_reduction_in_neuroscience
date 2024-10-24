@@ -17,3 +17,10 @@ conda create -n dimredcution python=3.11 mamba -y
 conda activate dimredcution
 mamba install -y ipykernel matplotlib numpy scipy scikit-learn umap-learn
 ```
+
+## Acknowledgements
+The data used in this course is from the following public sources:
+
+* "**hypothalamus_calcium_imaging_remedios_et_al.mat**": The dataset is from the 2023's course '[data analysis techniques in neuroscience](https://github.com/cheninstitutecaltech/Caltech_DATASAI_Neuroscience_23)' by the Chen Institute for Neuroscience at Caltech, originally from the paper: Remedios, R., Kennedy, A., Zelikowsky, M. et al. Social behaviour shapes hypothalamic neural  ensemble representations of conspecific sex. Nature 550, 388–392 (2017). <https://doi.org/10.1038/nature23885>
+* "**macosko_2015.pkl.gz**": Extracted from the the datasets available in the [openTSEN package](https://opentsne.readthedocs.io/en/stable/examples/01_simple_usage/01_simple_usage.html). Specifically, it is the Macosko 2015 mouse retina data set. 
+* "**hippocampus_achilles**": Extracted from the datasets available in the [CEBRA package](https://cebra.ai/docs/demo_notebooks/Demo_hippocampus.html).
