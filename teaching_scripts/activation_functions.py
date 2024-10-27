@@ -1,5 +1,8 @@
 """ 
 Just a script to plot various activation functions.
+
+author: Fabrizio Musacchio
+date: Okt 27, 2024
 """
 # %% IMPORTS
 import os
