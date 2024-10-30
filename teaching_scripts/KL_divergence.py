@@ -47,22 +47,25 @@ p2 = norm.pdf(x, mean_p2, std_p2)
 q2 = norm.pdf(x, mean_q2, std_q2)
 kl_div2 = kl_divergence(p2, q2)
 
-# Plot the two cases
+# plot the two cases:
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 4.25))
-
-# Plot for Case 1 (distributions closer together)
+# plot for Case 1 (distributions closer together):
 ax1.plot(x, p1, label=f'$P$ ($\mu$={mean_p1}, $\sigma$={std_p1})', color='turquoise')
 ax1.plot(x, q1, label=f'$Q$ ($\mu$={mean_q1}, $\sigma$={std_q1})', color='hotpink')
+# the non-overlapping area is shaded in gray:
 ax1.fill_between(x, p1, q1, color="gray", alpha=0.2)
+# the overlapping area is shaded in limegreen:
+ax1.fill_between(x, np.minimum(p1, q1), color="limegreen", alpha=0.3)
 ax1.set_title(f"KL Divergence = {kl_div1:.3f}")
 ax1.set_xlabel('x')
 ax1.set_ylabel('Density')
 ax1.legend(loc='upper left', fontsize=12)
 
-# Plot for Case 2 (distributions further apart)
+# plot for Case 2 (distributions further apart):
 ax2.plot(x, p2, label=f'$P$ ($\mu$={mean_p2}, $\sigma$={std_p2})', color='turquoise')
 ax2.plot(x, q2, label=f'$Q$ ($\mu$={mean_q2}, $\sigma$={std_q2})', color='hotpink')
 ax2.fill_between(x, p2, q2, color="gray", alpha=0.2)
+ax2.fill_between(x, np.minimum(p2, q2), color="limegreen", alpha=0.3)
 ax2.set_title(f"KL Divergence = {kl_div2:.3f}")
 ax2.set_xlabel('x')
 #ax2.set_ylabel('Density')
@@ -70,7 +73,6 @@ ax2.legend(loc='upper left', fontsize=12)
 
 # add super title:
 fig.suptitle(f'KL divergence of two example Gaussian distributions $P$ and $Q$')
-
 plt.tight_layout()
 plt.savefig(RESULTSPATH + f'KL_divergence_demonstrated.png', dpi=300)
 plt.show()
